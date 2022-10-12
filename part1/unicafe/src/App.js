@@ -10,6 +10,16 @@ const Stat = ({ name, amount }) => (
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
+
+  if (all == 0) {
+    return (
+      <>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
+      </>
+    )
+  }
+
   const average = ((good * 1) + (neutral * 0) + (bad * -1)) / all
   const positive = good / all * 100 + " %"
 
