@@ -6,11 +6,11 @@ const Button = ({ handleClick, text }) => (
 
 const StatisticLine = ({ text, value }) => (
   <tr>
-    <td>
-      <p>{text}</p>
+    <td style={{ height: "10px" }}>
+      <div>{text}</div>
     </td>
-    <td>
-      <p>{value}</p>
+    <td style={{ height: "10px" }}>
+      <div>{value}</div>
     </td>
   </tr>
 );
