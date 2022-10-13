@@ -16,11 +16,16 @@ const Content = ({ parts }) => {
   );
 };
 
-const Total = (props) => {
-  let total = 0;
-  const t = props.parts.forEach((value) => (total += value.exercises));
+const Total = ({ parts }) => {
+  const total = parts.reduce((sum, part) => {
+    return (sum += part.exercises);
+  }, 0);
 
-  return <p>Number of exercises {total}</p>;
+  return (
+    <p>
+      <strong>total of {total} exercises</strong>
+    </p>
+  );
 };
 
 const Course = ({ course }) => {
