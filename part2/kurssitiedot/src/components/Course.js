@@ -1,3 +1,4 @@
+// Exercise 2.5 already done
 const Header = (props) => <h2>{props.course.name}</h2>;
 
 const Part = (props) => (
