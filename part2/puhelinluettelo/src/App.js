@@ -3,12 +3,14 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newFilter, setNewFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((persons) => setPersons(persons))
@@ -27,9 +29,10 @@ const App = () => {
       number: newNumber,
     }
 
-    personService
-      .create(personObject)
-      .then((returnedPerson) => setPersons(persons.concat(returnedPerson)))
+    personService.create(personObject).then((returnedPerson) => {
+      showNotifaction(`Added ${returnedPerson.name}`)
+      setPersons(persons.concat(returnedPerson))
+    })
   }
 
   const modifyNumber = (name) => {
@@ -40,27 +43,30 @@ const App = () => {
       )
     ) {
       const person = {...personToModify, number: newNumber}
-      personService
-        .update(personToModify.id, person)
-        .then((modifiedPerson) =>
-          setPersons(
-            persons.map((p) =>
-              p.id !== modifiedPerson.id ? p : modifiedPerson
-            )
-          )
+      personService.update(personToModify.id, person).then((modifiedPerson) => {
+        showNotifaction(
+          `Changed number for ${modifiedPerson.name} from ${personToModify.number} to ${modifiedPerson.number}`
         )
+        setPersons(
+          persons.map((p) => (p.id !== modifiedPerson.id ? p : modifiedPerson))
+        )
+      })
     }
   }
 
   const deletePerson = (id) => {
     const personToDelete = persons.find((p) => p.id === id)
     if (window.confirm(`Delete ${personToDelete.name}?`)) {
-      personService
-        .remove(id)
-        .then((response) =>
-          setPersons(persons.filter((p) => p.id !== personToDelete.id))
-        )
+      personService.remove(id).then((response) => {
+        showNotifaction(`Deleted person ${personToDelete.name}`)
+        return setPersons(persons.filter((p) => p.id !== personToDelete.id))
+      })
     }
+  }
+
+  const showNotifaction = (message) => {
+    setNotification(message)
+    setTimeout(() => setNotification(null), 5000)
   }
 
   const handleNameInput = (event) => {
@@ -78,6 +84,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Filter filter={newFilter} handleFilterInput={handleFilterInput} />
       <h2>Add a new</h2>
       <PersonForm
