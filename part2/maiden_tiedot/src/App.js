@@ -1,20 +1,34 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 
-const DisplayCountry = ({country}) => (
-  <div>
-    <h1>{country.name.common}</h1>
-    <div>capital {country.capital[0]}</div>
-    <div>area {country.area}</div>
-    <h2>languages:</h2>
-    <ul>
-      {Object.keys(country.languages).map((key) => (
-        <li key={key}>{country.languages[key]}</li>
-      ))}
-    </ul>
-    <img src={country.flags.png} alt="Country  flag" width="150" />
-  </div>
-)
+const DisplayCountry = ({country}) => {
+  const [showInfo, setShowInfo] = useState(false)
+
+  return (
+    <>
+      {showInfo ? (
+        <div>
+          <h1>{country.name.common}</h1>
+          <button onClick={() => setShowInfo(false)}>Hide</button>
+          <div>capital {country.capital[0]}</div>
+          <div>area {country.area}</div>
+          <h2>languages:</h2>
+          <ul>
+            {Object.keys(country.languages).map((key) => (
+              <li key={key}>{country.languages[key]}</li>
+            ))}
+          </ul>
+          <img src={country.flags.png} alt="Country  flag" width="150" />
+        </div>
+      ) : (
+        <div>
+          {country.name.common}
+          <button onClick={() => setShowInfo(true)}>show</button>
+        </div>
+      )}
+    </>
+  )
+}
 
 function App() {
   const [filter, setFilter] = useState('')
@@ -42,10 +56,8 @@ function App() {
       </div>
       {showCountries.length > 10 ? (
         <div>Too many matches, specify another filter</div>
-      ) : showCountries.length == 1 ? (
-        <DisplayCountry country={showCountries[0]} />
       ) : (
-        showCountries.map((c) => <div>{c.name.common}</div>)
+        showCountries.map((c) => <DisplayCountry country={c} />)
       )}
     </>
   )
