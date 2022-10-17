@@ -4,6 +4,7 @@ import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from './services/persons'
 import Notification from './components/Notification'
+import Error from './components/Error'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((persons) => setPersons(persons))
@@ -43,14 +45,23 @@ const App = () => {
       )
     ) {
       const person = {...personToModify, number: newNumber}
-      personService.update(personToModify.id, person).then((modifiedPerson) => {
-        showNotifaction(
-          `Changed number for ${modifiedPerson.name} from ${personToModify.number} to ${modifiedPerson.number}`
+      personService
+        .update(personToModify.id, person)
+        .then((modifiedPerson) => {
+          showNotifaction(
+            `Changed number for ${modifiedPerson.name} from ${personToModify.number} to ${modifiedPerson.number}`
+          )
+          setPersons(
+            persons.map((p) =>
+              p.id !== modifiedPerson.id ? p : modifiedPerson
+            )
+          )
+        })
+        .catch((error) =>
+          showError(
+            `Information of ${person.name} has already been removed from server`
+          )
         )
-        setPersons(
-          persons.map((p) => (p.id !== modifiedPerson.id ? p : modifiedPerson))
-        )
-      })
     }
   }
 
@@ -66,6 +77,11 @@ const App = () => {
 
   const showNotifaction = (message) => {
     setNotification(message)
+    setTimeout(() => setNotification(null), 5000)
+  }
+
+  const showError = (message) => {
+    setError(message)
     setTimeout(() => setNotification(null), 5000)
   }
 
@@ -85,6 +101,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notification} />
+      <Error message={error} />
       <Filter filter={newFilter} handleFilterInput={handleFilterInput} />
       <h2>Add a new</h2>
       <PersonForm
