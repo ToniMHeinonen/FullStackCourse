@@ -1,4 +1,4 @@
-# fly.toml file generated for full-stack-open-puhelinluettelo on 2022-10-19T09:44:36+03:00
+# fly.toml file generated for full-stack-open-puhelinluettelo on 2022-10-19T10:16:10+03:00
 
 app = "full-stack-open-puhelinluettelo"
 kill_signal = "SIGINT"
