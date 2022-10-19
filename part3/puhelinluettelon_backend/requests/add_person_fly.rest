@@ -1,0 +1,7 @@
+POST https://full-stack-open-puhelinluettelo.fly.dev/api/persons
+Content-Type: application/json
+
+{
+    "name": "Test Buddy",
+    "number": "123123123"
+}

@@ -1,0 +1,1 @@
+DELETE https://full-stack-open-puhelinluettelo.fly.dev/api/persons/389
