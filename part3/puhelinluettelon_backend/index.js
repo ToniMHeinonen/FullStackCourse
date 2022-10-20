@@ -39,9 +39,11 @@ let persons = [
 ]
 
 app.get('/info', (req, res) => {
-  const personsInfo = `<p>Phonebook has info for ${persons.length} people</p>`
-  const dateInfo = `<p>${new Date()}</p>`
-  res.send(`<div>${personsInfo}${dateInfo}</div>`)
+  Person.find({}).then((persons) => {
+    const personsInfo = `<p>Phonebook has info for ${persons.length} people</p>`
+    const dateInfo = `<p>${new Date()}</p>`
+    res.send(`<div>${personsInfo}${dateInfo}</div>`)
+  })
 })
 
 app.get('/api/persons', (req, res) => {
