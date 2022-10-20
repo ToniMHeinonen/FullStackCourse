@@ -63,10 +63,6 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-const generateId = () => {
-  return Math.floor(Math.random() * 1000)
-}
-
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
@@ -78,24 +74,25 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({
       error: 'number missing',
     })
-  } else if (persons.find((p) => p.name === body.name)) {
+  }
+  /* This part of code is not yet functional
+  else if (persons.find((p) => p.name === body.name)) {
     return response.status(400).json({
       error: 'name must be unique',
     })
-  }
+  }*/
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  }
+  })
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then((savedPerson) => {
+    response.json(savedPerson)
+  })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
