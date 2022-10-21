@@ -27,7 +27,7 @@ Note.find({}).then((result) => {
   mongoose.connection.close()
 })
 
-Note.find({important: true}).then((result) => {
+Note.find({ important: true }).then((result) => {
   console.log('-- Important --')
   result.forEach((note) => {
     console.log(note)
