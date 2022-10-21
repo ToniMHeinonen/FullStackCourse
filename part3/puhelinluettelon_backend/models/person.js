@@ -40,6 +40,7 @@ const personSchema = new mongoose.Schema({
   },
 })
 
+// eslint-disable-next-line no-unused-vars
 const Person = mongoose.model('Person', personSchema)
 
 personSchema.set('toJSON', {

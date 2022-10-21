@@ -10,11 +10,13 @@
     "build:ui": "rd /s /q build && cd ../../part2/puhelinluettelo/ && npm run build && Robocopy /S /E build ../../part3/puhelinluettelon_backend/build",
     "deploy": "flyctl deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "flyctl logs"
+    "logs:prod": "flyctl logs",
+    "lint": "eslint ."
   },
   "author": "Toni Heinonen",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^8.25.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
