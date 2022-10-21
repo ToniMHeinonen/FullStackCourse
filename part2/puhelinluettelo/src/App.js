@@ -31,10 +31,15 @@ const App = () => {
       number: newNumber,
     }
 
-    personService.create(personObject).then((returnedPerson) => {
-      showNotifaction(`Added ${returnedPerson.name}`)
-      setPersons(persons.concat(returnedPerson))
-    })
+    personService
+      .create(personObject)
+      .then((returnedPerson) => {
+        showNotifaction(`Added ${returnedPerson.name}`)
+        setPersons(persons.concat(returnedPerson))
+      })
+      .catch((error) => {
+        showError(error.response.data.error)
+      })
   }
 
   const modifyNumber = (name) => {
