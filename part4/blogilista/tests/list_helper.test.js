@@ -236,3 +236,117 @@ describe('most blogs', () => {
     })
   })
 })
+
+describe('most likes', () => {
+  const listWithIdenticalLikesCount = [
+    {
+      _id: '5a422a851b54a676234d17f7',
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 7,
+      __v: 0,
+    },
+    {
+      _id: '5a422b3a1b54a676234d17f9',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 8,
+      __v: 0,
+    },
+    {
+      _id: '5a422a851b54a676234d17f7',
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 5,
+      __v: 0,
+    },
+    {
+      _id: '5a422b3a1b54a676234d17f9',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 4,
+      __v: 0,
+    },
+  ]
+
+  const listWithMultipleBlogsForOneAuthor = [
+    {
+      _id: '5a422b3a1b54a676234d17f9',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 3,
+      __v: 0,
+    },
+    {
+      _id: '5a422a851b54a676234d17f7',
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 7,
+      __v: 0,
+    },
+    {
+      _id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 5,
+      __v: 0,
+    },
+  ]
+
+  const listWithMultipleBlogsSingleBlogHighestLikes = [
+    {
+      _id: '5a422b3a1b54a676234d17f9',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 3,
+      __v: 0,
+    },
+    {
+      _id: '5a422a851b54a676234d17f7',
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 10,
+      __v: 0,
+    },
+    {
+      _id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 5,
+      __v: 0,
+    },
+  ]
+
+  test('multiple blog posts for one author with most likes', () => {
+    expect(listHelper.mostLikes(listWithMultipleBlogsForOneAuthor)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 8,
+    })
+  })
+
+  test('identical likes count', () => {
+    expect(listHelper.mostLikes(listWithIdenticalLikesCount)).toEqual({
+      author: 'Michael Chan',
+      likes: 12,
+    })
+  })
+
+  test('multiple blog posts for one author single blog author has highest count', () => {
+    expect(
+      listHelper.mostLikes(listWithMultipleBlogsSingleBlogHighestLikes)
+    ).toEqual({
+      author: 'Michael Chan',
+      likes: 10,
+    })
+  })
+})
