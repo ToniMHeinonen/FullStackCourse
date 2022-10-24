@@ -24,8 +24,22 @@ const favoriteBlog = (blogs) => {
   }
 }
 
+const mostBlogs = (blogs) => {
+  // Count how many blogs each author has written
+  const blogCountList = blogs.reduce((list, next) => {
+    const author = list.find((a) => a.author === next.author)
+    author ? author.blogs++ : list.push({ author: next.author, blogs: 1 })
+    return list
+  }, [])
+
+  return blogCountList.reduce((most, next) => {
+    return most.blogs >= next.blogs ? most : next
+  }, {})
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }
