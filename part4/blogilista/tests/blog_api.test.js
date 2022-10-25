@@ -99,6 +99,27 @@ describe('when there is initially some blogs saved', () => {
       expect(titles).not.toContain(blogToDelete.title)
     })
   })
+
+  describe('updating a blog', () => {
+    test('updates like count and keeps title and url', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+      const updatedLikeCount = blogToUpdate.likes + 1
+
+      const blog = {
+        likes: updatedLikeCount,
+      }
+
+      await api.put(`/api/blogs/${blogToUpdate.id}`).send(blog).expect(200)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      const updatedBlog = blogsAtEnd[0]
+
+      expect(updatedBlog.likes).toBe(updatedLikeCount)
+      expect(updatedBlog.title).toBe(blogToUpdate.title)
+      expect(updatedBlog.url).toBe(blogToUpdate.url)
+    })
+  })
 })
 
 afterAll(() => {
