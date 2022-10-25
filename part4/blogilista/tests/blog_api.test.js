@@ -68,6 +68,18 @@ test('a blog has 0 likes if not defined', async () => {
   expect(blogs[helper.initialBlogs.length].likes).toBe(0)
 })
 
+test('a blog with no title or url should not be added', async () => {
+  const newBlog = {
+    author: 'Test author',
+    likes: 20,
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(400)
+
+  const blogs = await helper.blogsInDb()
+  expect(blogs.length).toBe(helper.initialBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
