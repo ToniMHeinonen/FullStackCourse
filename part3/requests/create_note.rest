@@ -3,5 +3,6 @@ Content-Type: application/json
 
 {
     "content": "VS Code REST client is pretty good",
-    "important": false
+    "important": false,
+    "userId": "635795bf6a82d643c620ff8b"
 }
