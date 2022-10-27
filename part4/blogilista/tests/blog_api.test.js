@@ -7,9 +7,17 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 
 describe('when there is initially some blogs saved', () => {
+  beforeAll(async () => {
+    await helper.initializeUsers()
+  })
+
   beforeEach(async () => {
     await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+
+    const token = await helper.userToken(api)
+    for (const blog of helper.initialBlogs) {
+      await api.post('/api/blogs').send(blog).set({ Authorization: token })
+    }
   })
 
   test('blogs are returned as json', async () => {
@@ -40,9 +48,12 @@ describe('when there is initially some blogs saved', () => {
         likes: 10,
       }
 
+      const token = await helper.userToken(api)
+
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set({ Authorization: token })
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
@@ -60,9 +71,12 @@ describe('when there is initially some blogs saved', () => {
         url: 'Test url',
       }
 
+      const token = await helper.userToken(api)
+
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set({ Authorization: token })
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
@@ -76,7 +90,25 @@ describe('when there is initially some blogs saved', () => {
         likes: 20,
       }
 
-      await api.post('/api/blogs').send(newBlog).expect(400)
+      const token = await helper.userToken(api)
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .set({ Authorization: token })
+        .expect(400)
+
+      const blogs = await helper.blogsInDb()
+      expect(blogs.length).toBe(helper.initialBlogs.length)
+    })
+
+    test('a blog with no token should return status code 401', async () => {
+      const newBlog = {
+        author: 'Test author',
+        likes: 20,
+      }
+
+      await api.post('/api/blogs').send(newBlog).expect(401)
 
       const blogs = await helper.blogsInDb()
       expect(blogs.length).toBe(helper.initialBlogs.length)
@@ -88,7 +120,12 @@ describe('when there is initially some blogs saved', () => {
       const blogsAtStart = await helper.blogsInDb()
       const blogToDelete = blogsAtStart[0]
 
-      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+      const token = await helper.userToken(api)
+
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .set({ Authorization: token })
+        .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
 
