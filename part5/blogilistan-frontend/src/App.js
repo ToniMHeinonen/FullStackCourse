@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
+import Error from './components/Error'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +13,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     loadBlogs()
@@ -42,7 +46,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {}
+    } catch (exception) {
+      showError('wrong username or password')
+    }
   }
 
   const handleLogout = async (event) => {
@@ -67,15 +73,29 @@ const App = () => {
       setAuthor('')
       setUrl('')
       loadBlogs()
+      showNotifaction(`a new blog ${title} by ${author} added`)
     } catch (exception) {
-      console.log(exception.response.data.error)
+      const error = exception.response.data.error
+      showError(error)
+      console.log(error)
     }
+  }
+
+  const showNotifaction = (message) => {
+    setNotification(message)
+    setTimeout(() => setNotification(null), 5000)
+  }
+
+  const showError = (message) => {
+    setError(message)
+    setTimeout(() => setError(null), 5000)
   }
 
   if (user === null) {
     return (
       <div>
         <h2>Log in to applicatiopn</h2>
+        <Error message={error} />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -104,6 +124,8 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Error message={error} />
+      <Notification message={notification} />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
