@@ -72,6 +72,24 @@ const App = () => {
     }
   }
 
+  const updateBlog = async (blog) => {
+    try {
+      const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+      console.log(changedBlog)
+
+      const updatedBlog = await blogService.update(changedBlog.id, changedBlog)
+
+      await setBlogs(
+        blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
+      )
+    } catch (exception) {
+      const error = exception.response.data.error
+      showError(error)
+      console.log(error)
+    }
+  }
+
   const showNotifaction = (message) => {
     setNotification(message)
     setTimeout(() => setNotification(null), 5000)
@@ -126,7 +144,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
       ))}
     </div>
   )
