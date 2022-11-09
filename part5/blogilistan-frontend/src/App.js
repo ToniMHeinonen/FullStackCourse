@@ -29,8 +29,10 @@ const App = () => {
     }
   }, [])
 
-  const loadBlogs = () => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+  const loadBlogs = async () => {
+    await blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
   }
 
   const handleLogin = async (event) => {
