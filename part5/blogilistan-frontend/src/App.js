@@ -25,6 +25,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      blogService.setToken(user.token)
       setUser(user)
     }
   }, [])
@@ -92,6 +93,21 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      try {
+        await blogService.remove(blog.id)
+
+        showNotifaction(`blog ${blog.title} by ${blog.author} removed`)
+        setBlogs(blogs.filter((b) => b.id !== blog.id))
+      } catch (exception) {
+        const error = exception.response.data.error
+        showError(error)
+        console.log(error)
+      }
+    }
+  }
+
   const showNotifaction = (message) => {
     setNotification(message)
     setTimeout(() => setNotification(null), 5000)
@@ -146,7 +162,13 @@ const App = () => {
       </Togglable>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          updateBlog={updateBlog}
+          deleteBlog={deleteBlog}
+          user={user}
+        />
       ))}
     </div>
   )
