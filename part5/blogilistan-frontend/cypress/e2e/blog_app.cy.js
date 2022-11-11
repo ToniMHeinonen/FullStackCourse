@@ -1,13 +1,11 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    const user = {
+    cy.createUser({
       name: 'User Agent',
       username: 'user123',
       password: 'password123',
-    }
-    cy.request('POST', 'http://localhost:3003/api/users/', user)
-    cy.visit('http://localhost:3000')
+    })
   })
 
   it('Login form is shown', function () {
@@ -66,20 +64,47 @@ describe('Blog app', function () {
         })
       })
 
-      describe('When liking a blog', function () {
+      describe('When logged in with different user than blog user', function () {
+        beforeEach(function () {
+          cy.createUser({
+            name: 'Test User',
+            username: 'testuser',
+            password: 'password',
+          })
+          cy.login({ username: 'testuser', password: 'password' })
+        })
+
+        it('Blog can not be removed with wrong credentials', function () {
+          cy.contains('show').click()
+          cy.get('#blogs-list').should('not.contain', 'remove')
+        })
+      })
+
+      describe('When blog is opened', function () {
         beforeEach(function () {
           cy.contains('show').click()
-          cy.contains('likes 0').find('button').as('theButton')
-          cy.get('@theButton').click()
         })
 
-        it('Blog can be liked', function () {
-          cy.contains('likes 1')
+        it('Blog can be removed with correct credentials', function () {
+          cy.contains('remove').click()
+          cy.contains('blog Title test by Author test removed')
+          cy.get('#blogs-list').should('not.contain', 'Title test Author test')
         })
 
-        it('Liking a blog does not remove user information', function () {
-          cy.get('#blogs-list').contains('User Agent')
-          cy.contains('remove')
+        describe('When liking a blog', function () {
+          beforeEach(function () {
+            cy.contains('likes 0').find('button').as('theButton')
+            cy.get('@theButton').click()
+          })
+
+          it('Blog can be liked', function () {
+            cy.contains('likes 1')
+          })
+
+          it('Liking a blog does not remove user information', function () {
+            cy.get('#blogs-list').contains('User Agent')
+            cy.contains('remove')
+          })
         })
       })
     })
