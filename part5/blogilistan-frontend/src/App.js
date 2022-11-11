@@ -79,9 +79,11 @@ const App = () => {
     try {
       const changedBlog = { ...blog, likes: blog.likes + 1 }
 
-      console.log(changedBlog)
-
       const updatedBlog = await blogService.update(changedBlog.id, changedBlog)
+
+      // For some reason user is not converted correctly when updating blogs
+      // even though the code is pretty much identical to example code
+      updatedBlog.user = blog.user
 
       await setBlogs(
         blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))

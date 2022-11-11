@@ -56,5 +56,32 @@ describe('Blog app', function () {
         .and('contain', 'show')
       cy.contains('a new blog Title test by Author test added')
     })
+
+    describe('When blog is created', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Title test',
+          author: 'Author test',
+          url: 'Url test',
+        })
+      })
+
+      describe('When liking a blog', function () {
+        beforeEach(function () {
+          cy.contains('show').click()
+          cy.contains('likes 0').find('button').as('theButton')
+          cy.get('@theButton').click()
+        })
+
+        it('Blog can be liked', function () {
+          cy.contains('likes 1')
+        })
+
+        it('Liking a blog does not remove user information', function () {
+          cy.get('#blogs-list').contains('User Agent')
+          cy.contains('remove')
+        })
+      })
+    })
   })
 })
