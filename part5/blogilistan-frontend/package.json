@@ -17,7 +17,9 @@
     "test:once": "cross-env CI=true npm test",
     "test:coverage": "cross-env CI=true npm test -- --coverage",
     "eject": "react-scripts eject",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +45,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "cross-env": "^7.0.3",
+    "cypress": "^11.0.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest": "^27.1.4"
   }
 }

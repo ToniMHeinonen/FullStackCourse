@@ -121,12 +121,13 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <h2>Log in to applicatiopn</h2>
+        <h2>Log in to application</h2>
         <Error message={error} />
         <form onSubmit={handleLogin}>
           <div>
             username
             <input
+              id="login-username"
               type="text"
               value={username}
               name="Username"
@@ -136,13 +137,16 @@ const App = () => {
           <div>
             password
             <input
+              id="login-password"
               type="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button type="submit">login</button>
+          <button id="login-submit" type="submit">
+            login
+          </button>
         </form>
       </div>
     )
