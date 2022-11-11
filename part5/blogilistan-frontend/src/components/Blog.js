@@ -19,7 +19,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       {visible ? (
         <>
           <div onClick={() => setVisible(false)}>

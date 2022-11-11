@@ -108,5 +108,54 @@ describe('Blog app', function () {
         })
       })
     })
+
+    describe('When multiple blogs are created', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Title with the least likes',
+          author: 'Author test',
+          url: 'Url test',
+          likes: 0,
+        })
+        cy.createBlog({
+          title: 'Title with the most likes',
+          author: 'Author test',
+          url: 'Url test',
+          likes: 2,
+        })
+        cy.createBlog({
+          title: 'Title with the second most likes',
+          author: 'Author test',
+          url: 'Url test',
+          likes: 1,
+        })
+      })
+
+      it('Blogs are sorted by likes', function () {
+        cy.get('.blog').eq(0).should('contain', 'Title with the most likes')
+        cy.get('.blog')
+          .eq(1)
+          .should('contain', 'Title with the second most likes')
+        cy.get('.blog').eq(2).should('contain', 'Title with the least likes')
+      })
+
+      it('Liking a blog sorts it correctly', function () {
+        cy.contains('Title with the second most likes')
+          .parent()
+          .as('secondBlog')
+        cy.get('@secondBlog').contains('show').click()
+        cy.get('@secondBlog')
+          .contains('likes 1')
+          .find('button')
+          .as('likeButton')
+        cy.get('@likeButton').click()
+        cy.get('.blog').eq(0).should('contain', 'Title with the most likes')
+        cy.get('@likeButton').click()
+        cy.get('.blog')
+          .eq(0)
+          .should('contain', 'Title with the second most likes')
+        cy.get('.blog').eq(1).should('contain', 'Title with the most likes')
+      })
+    })
   })
 })

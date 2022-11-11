@@ -31,9 +31,11 @@ const App = () => {
   }, [])
 
   const loadBlogs = async () => {
-    await blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
+    await blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)))
+  }
+
+  const sortBlogs = (blogs) => {
+    return blogs.sort((a, b) => b.likes - a.likes)
   }
 
   const handleLogin = async (event) => {
@@ -85,9 +87,11 @@ const App = () => {
       // even though the code is pretty much identical to example code
       updatedBlog.user = blog.user
 
-      await setBlogs(
-        blogs.map((blog) => (blog.id !== updatedBlog.id ? blog : updatedBlog))
+      const modifiedBlogs = blogs.map((blog) =>
+        blog.id !== updatedBlog.id ? blog : updatedBlog
       )
+
+      await setBlogs(sortBlogs(modifiedBlogs))
     } catch (exception) {
       const error = exception.response.data.error
       showError(error)
