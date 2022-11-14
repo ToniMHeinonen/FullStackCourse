@@ -35,6 +35,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+// Already done
 export const voteAnecdote = (id) => {
   return {
     type: 'VOTE_ANECDOTE',
