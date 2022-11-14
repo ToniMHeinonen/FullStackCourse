@@ -25,6 +25,8 @@ const reducer = (state = initialState, action) => {
       const anecdote = state.find((a) => a.id === action.data.id)
       const modified = { ...anecdote, votes: anecdote.votes + 1 }
       return state.map((a) => (a.id !== modified.id ? a : modified))
+    case 'NEW_ANECDOTE':
+      return [...state, action.data]
     default:
       return state
   }
@@ -34,6 +36,17 @@ export const voteAnecdote = (id) => {
   return {
     type: 'VOTE_ANECDOTE',
     data: { id },
+  }
+}
+
+export const createAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data: {
+      content,
+      id: getId(),
+      votes: 0,
+    },
   }
 }
 
