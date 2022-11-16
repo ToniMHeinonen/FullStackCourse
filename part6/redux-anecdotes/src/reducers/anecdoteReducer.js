@@ -13,7 +13,7 @@ const anecdoteSlice = createSlice({
       )
       return modifiedState.sort((a, b) => b.votes - a.votes)
     },
-    createAnecdote(state, action) {
+    appendAnecdote(state, action) {
       return [...state, action.payload]
     },
     setAnecdotes(state, action) {
@@ -22,13 +22,20 @@ const anecdoteSlice = createSlice({
   },
 })
 
-export const { voteAnecdote, createAnecdote, setAnecdotes } =
+export const { voteAnecdote, setAnecdotes, appendAnecdote } =
   anecdoteSlice.actions
 
 export const initializeAnecdotes = () => {
   return async (dispatch) => {
     const anecdotes = await anecdoteService.getAll()
     dispatch(setAnecdotes(anecdotes))
+  }
+}
+
+export const createAnecdote = (content) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch(appendAnecdote(newAnecdote))
   }
 }
 
