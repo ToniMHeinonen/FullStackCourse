@@ -10,6 +10,8 @@ import {
   useParams,
   useNavigate,
 } from 'react-router-dom'
+import Counter from './custom-hooks/Counter'
+import Field from './custom-hooks/Field'
 
 const Home = () => (
   <div>
@@ -143,6 +145,12 @@ const App = () => {
               login
             </Link>
           )}
+          <Link style={padding} to="/counter">
+            counter
+          </Link>
+          <Link style={padding} to="/field">
+            field
+          </Link>
         </div>
 
         <Routes>
@@ -154,6 +162,8 @@ const App = () => {
           />
           <Route path="/login" element={<Login onLogin={login} />} />
           <Route path="/" element={<Home />} />
+          <Route path="/counter" element={<Counter />} />
+          <Route path="/field" element={<Field />} />
         </Routes>
       </Router>
       <div>
