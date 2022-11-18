@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -6,15 +7,16 @@ import Notification from './components/Notification'
 import Error from './components/Error'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
   const [error, setError] = useState(null)
 
+  const dispatch = useDispatch()
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -68,7 +70,9 @@ const App = () => {
       await blogService.create(blog)
 
       loadBlogs()
-      showNotifaction(`a new blog ${blog.title} by ${blog.author} added`)
+      dispatch(
+        setNotification(`a new blog ${blog.title} by ${blog.author} added`)
+      )
       blogFormRef.current.toggleVisibility()
     } catch (exception) {
       const error = exception.response.data.error
@@ -104,7 +108,9 @@ const App = () => {
       try {
         await blogService.remove(blog.id)
 
-        showNotifaction(`blog ${blog.title} by ${blog.author} removed`)
+        dispatch(
+          setNotification(`blog ${blog.title} by ${blog.author} removed`)
+        )
         setBlogs(blogs.filter((b) => b.id !== blog.id))
       } catch (exception) {
         const error = exception.response.data.error
@@ -112,11 +118,6 @@ const App = () => {
         console.log(error)
       }
     }
-  }
-
-  const showNotifaction = (message) => {
-    setNotification(message)
-    setTimeout(() => setNotification(null), 5000)
   }
 
   const showError = (message) => {
@@ -162,7 +163,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Error message={error} />
-      <Notification message={notification} />
+      <Notification />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
