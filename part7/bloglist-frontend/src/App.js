@@ -13,6 +13,9 @@ import { setUser } from './reducers/userReducer'
 import UserList from './components/UserList'
 import { initializeUserList } from './reducers/userListReducer'
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import User from './components/User'
+
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -107,12 +110,23 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
 
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm toggleRef={blogFormRef} />
-      </Togglable>
-
-      <BlogList user={user} />
-      <UserList />
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+                  <BlogForm toggleRef={blogFormRef} />
+                </Togglable>
+                <BlogList user={user} />
+                <UserList />{' '}
+              </div>
+            }
+          />
+          <Route path="/users/:id" element={<User />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
