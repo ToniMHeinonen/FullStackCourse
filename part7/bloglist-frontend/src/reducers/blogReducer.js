@@ -65,9 +65,6 @@ export const likeBlog = (blog) => {
       const modified = { ...blog, likes: blog.likes + 1 }
       const updatedBlog = await blogService.update(blog.id, modified)
 
-      // For some reason user is not converted correctly when updating blogs
-      updatedBlog.user = blog.user
-
       dispatch(modifyBlog(updatedBlog))
       return { status: 'success', blog: updatedBlog }
     } catch (exception) {
