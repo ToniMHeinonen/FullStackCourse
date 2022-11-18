@@ -56,49 +56,6 @@ const App = () => {
     setUser(null)
   }
 
-  /*
-  const updateBlog = async (blog) => {
-    try {
-      const changedBlog = { ...blog, likes: blog.likes + 1 }
-
-      const updatedBlog = await blogService.update(changedBlog.id, changedBlog)
-
-      // For some reason user is not converted correctly when updating blogs
-      // even though the code is pretty much identical to example code
-      updatedBlog.user = blog.user
-
-      const modifiedBlogs = blogs.map((blog) =>
-        blog.id !== updatedBlog.id ? blog : updatedBlog
-      )
-
-      await setBlogs(sortBlogs(modifiedBlogs))
-    } catch (exception) {
-      const error = exception.response.data.error
-      showError(error)
-      console.log(error)
-    }
-  }
-  */
-
-  /*
-  const deleteBlog = async (blog) => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      try {
-        await blogService.remove(blog.id)
-
-        dispatch(
-          setNotification(`blog ${blog.title} by ${blog.author} removed`)
-        )
-        setBlogs(blogs.filter((b) => b.id !== blog.id))
-      } catch (exception) {
-        const error = exception.response.data.error
-        showError(error)
-        console.log(error)
-      }
-    }
-  }
-  */
-
   if (user === null) {
     return (
       <div>

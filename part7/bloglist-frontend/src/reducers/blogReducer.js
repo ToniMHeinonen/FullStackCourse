@@ -13,10 +13,20 @@ const blogSlice = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
+    modifyBlog(state, action) {
+      const blog = action.payload
+      const modifiedState = state.map((a) => (a.id !== blog.id ? a : blog))
+      return sortBlogs(modifiedState)
+    },
+    removeBlog(state, action) {
+      const id = action.payload
+      return state.filter((b) => b.id !== id)
+    },
   },
 })
 
-export const { setBlogs, appendBlogs } = blogSlice.actions
+export const { setBlogs, appendBlogs, modifyBlog, removeBlog } =
+  blogSlice.actions
 
 const sortBlogs = (blogs) => {
   return blogs.sort((a, b) => b.likes - a.likes)
@@ -43,6 +53,43 @@ export const createBlog = (content) => {
     } catch (exception) {
       const error = exception.response.data.error
       dispatch(setError(error))
+      console.log(error)
+      return { status: 'error', error }
+    }
+  }
+}
+
+export const likeBlog = (blog) => {
+  return async (dispatch) => {
+    try {
+      const modified = { ...blog, likes: blog.likes + 1 }
+      const updatedBlog = await blogService.update(blog.id, modified)
+
+      // For some reason user is not converted correctly when updating blogs
+      updatedBlog.user = blog.user
+
+      dispatch(modifyBlog(updatedBlog))
+      return { status: 'success', blog: updatedBlog }
+    } catch (exception) {
+      const error = exception.response.data.error
+      setError(error)
+      console.log(error)
+      return { status: 'error', error }
+    }
+  }
+}
+
+export const deleteBlog = (blog) => {
+  return async (dispatch) => {
+    try {
+      await blogService.remove(blog.id)
+
+      dispatch(setNotification(`blog ${blog.title} by ${blog.author} removed`))
+      dispatch(removeBlog(blog.id))
+      return { status: 'success' }
+    } catch (exception) {
+      const error = exception.response.data.error
+      setError(error)
       console.log(error)
       return { status: 'error', error }
     }
