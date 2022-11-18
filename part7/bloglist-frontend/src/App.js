@@ -15,6 +15,7 @@ import { initializeUserList } from './reducers/userListReducer'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User from './components/User'
+import Blog from './components/Blog'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -119,12 +120,13 @@ const App = () => {
                 <Togglable buttonLabel="create new blog" ref={blogFormRef}>
                   <BlogForm toggleRef={blogFormRef} />
                 </Togglable>
-                <BlogList user={user} />
+                <BlogList />
                 <UserList />{' '}
               </div>
             }
           />
           <Route path="/users/:id" element={<User />} />
+          <Route path="/blogs/:id" element={<Blog />} />
         </Routes>
       </Router>
     </div>

@@ -86,7 +86,7 @@ export const deleteBlog = (blog) => {
       return { status: 'success' }
     } catch (exception) {
       const error = exception.response.data.error
-      setError(error)
+      dispatch(setError(error))
       console.log(error)
       return { status: 'error', error }
     }
