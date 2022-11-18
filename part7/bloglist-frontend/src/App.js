@@ -1,27 +1,26 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Error from './components/Error'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
-import { setNotification } from './reducers/notificationReducer'
+import BlogList from './components/BlogList'
+import { initializeBlogs } from './reducers/blogReducer'
+import { setError } from './reducers/errorReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [error, setError] = useState(null)
 
   const dispatch = useDispatch()
   const blogFormRef = useRef()
 
   useEffect(() => {
-    loadBlogs()
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -31,14 +30,6 @@ const App = () => {
       setUser(user)
     }
   }, [])
-
-  const loadBlogs = async () => {
-    await blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)))
-  }
-
-  const sortBlogs = (blogs) => {
-    return blogs.sort((a, b) => b.likes - a.likes)
-  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -55,7 +46,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      showError('wrong username or password')
+      dispatch(setError('wrong username or password'))
     }
   }
 
@@ -65,22 +56,7 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (blog) => {
-    try {
-      await blogService.create(blog)
-
-      loadBlogs()
-      dispatch(
-        setNotification(`a new blog ${blog.title} by ${blog.author} added`)
-      )
-      blogFormRef.current.toggleVisibility()
-    } catch (exception) {
-      const error = exception.response.data.error
-      showError(error)
-      console.log(error)
-    }
-  }
-
+  /*
   const updateBlog = async (blog) => {
     try {
       const changedBlog = { ...blog, likes: blog.likes + 1 }
@@ -102,7 +78,9 @@ const App = () => {
       console.log(error)
     }
   }
+  */
 
+  /*
   const deleteBlog = async (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       try {
@@ -119,17 +97,13 @@ const App = () => {
       }
     }
   }
-
-  const showError = (message) => {
-    setError(message)
-    setTimeout(() => setError(null), 5000)
-  }
+  */
 
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Error message={error} />
+        <Error />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -162,27 +136,17 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Error message={error} />
+      <Error />
       <Notification />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
 
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
+        <BlogForm toggleRef={blogFormRef} />
       </Togglable>
 
-      <div id="blogs-list">
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateBlog={updateBlog}
-            deleteBlog={deleteBlog}
-            user={user}
-          />
-        ))}
-      </div>
+      <BlogList user={user} />
     </div>
   )
 }
