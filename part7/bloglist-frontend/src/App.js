@@ -10,6 +10,8 @@ import BlogList from './components/BlogList'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setError } from './reducers/errorReducer'
 import { setUser } from './reducers/userReducer'
+import UserList from './components/UserList'
+import { initializeUserList } from './reducers/userListReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -22,6 +24,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUserList())
   }, [dispatch])
 
   useEffect(() => {
@@ -106,6 +112,7 @@ const App = () => {
       </Togglable>
 
       <BlogList user={user} />
+      <UserList />
     </div>
   )
 }
