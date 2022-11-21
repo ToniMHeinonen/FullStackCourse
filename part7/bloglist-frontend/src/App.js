@@ -16,6 +16,7 @@ import { initializeUserList } from './reducers/userListReducer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User from './components/User'
 import Blog from './components/Blog'
+import Menu from './components/Menu'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -62,12 +63,6 @@ const App = () => {
     }
   }
 
-  const handleLogout = async (event) => {
-    event.preventDefault()
-    window.localStorage.removeItem('loggedBlogappUser')
-    dispatch(setUser(null))
-  }
-
   if (user === null) {
     return (
       <div>
@@ -104,14 +99,11 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      <Error />
-      <Notification />
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
-
       <Router>
+        <Menu />
+        <h2>blog app</h2>
+        <Error />
+        <Notification />
         <Routes>
           <Route
             path="/"
@@ -121,10 +113,10 @@ const App = () => {
                   <BlogForm toggleRef={blogFormRef} />
                 </Togglable>
                 <BlogList />
-                <UserList />{' '}
               </div>
             }
           />
+          <Route path="/users/" element={<UserList />} />
           <Route path="/users/:id" element={<User />} />
           <Route path="/blogs/:id" element={<Blog />} />
         </Routes>
