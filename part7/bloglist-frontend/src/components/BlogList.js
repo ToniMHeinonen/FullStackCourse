@@ -1,29 +1,45 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+
+export const Wrapper = styled.section`
+  display: inline-block;
+`
+
+export const BlogContent = styled.button`
+  padding: 5px;
+  margin-right: 10px;
+  border-style: dashed;
+  border-width: 3px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border-color: black;
+`
+
+const StyledLink = styled(Link)`
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover {
+    color: #0bcadb;
+  }
+`
 
 const BlogList = () => {
   const blogs = useSelector(({ blogs }) => {
     return blogs
   })
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   return (
-    <div id="blogs-list">
+    <Wrapper id="blogs-list">
       {blogs.map((blog) => (
-        <div key={blog.id} style={blogStyle}>
-          <Link to={`/blogs/${blog.id}`}>
+        <BlogContent key={blog.id}>
+          <StyledLink to={`/blogs/${blog.id}`}>
             {blog.title} {blog.author}
-          </Link>
-        </div>
+          </StyledLink>
+        </BlogContent>
       ))}
-    </div>
+    </Wrapper>
   )
 }
 

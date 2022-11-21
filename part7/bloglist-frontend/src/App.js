@@ -18,11 +18,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User from './components/User'
 import Blog from './components/Blog'
 import Menu from './components/Menu'
-import { Heading1, Heading2 } from './styles/heading'
+import { Heading1, Title } from './styles/headings'
 
 export const Page = styled.div`
   padding: 1em 4em;
-  background-color: white;
+  background-color: #828282;
   border-color: black;
   border-style: outset;
   border-radius: 3em;
@@ -111,7 +111,7 @@ const App = () => {
     <Page>
       <Router>
         <Menu />
-        <Heading1>blog app</Heading1>
+        <Title>Blog App</Title>
         <Error />
         <Notification />
         <Routes>
@@ -119,7 +119,7 @@ const App = () => {
             path="/"
             element={
               <div>
-                <Heading2>Blogs</Heading2>
+                <Heading1>Blogs</Heading1>
                 <Togglable buttonLabel="create new blog" ref={blogFormRef}>
                   <BlogForm toggleRef={blogFormRef} />
                 </Togglable>

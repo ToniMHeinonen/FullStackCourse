@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
+import { Button } from '../styles/buttons'
 
 const BlogForm = ({ toggleRef }) => {
   const [title, setTitle] = useState('')
@@ -57,9 +58,9 @@ const BlogForm = ({ toggleRef }) => {
             id="url-input"
           />
         </div>
-        <button id="submit-blog" type="submit">
+        <Button id="submit-blog" type="submit">
           create
-        </button>
+        </Button>
       </form>
     </div>
   )
