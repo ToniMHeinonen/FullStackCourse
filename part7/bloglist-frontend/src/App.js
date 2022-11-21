@@ -12,11 +12,21 @@ import { setError } from './reducers/errorReducer'
 import { setUser } from './reducers/userReducer'
 import UserList from './components/UserList'
 import { initializeUserList } from './reducers/userListReducer'
+import styled from 'styled-components'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import User from './components/User'
 import Blog from './components/Blog'
 import Menu from './components/Menu'
+import { Heading1, Heading2 } from './styles/heading'
+
+export const Page = styled.div`
+  padding: 1em 4em;
+  background-color: white;
+  border-color: black;
+  border-style: outset;
+  border-radius: 3em;
+`
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -98,10 +108,10 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Page>
       <Router>
         <Menu />
-        <h2>blog app</h2>
+        <Heading1>blog app</Heading1>
         <Error />
         <Notification />
         <Routes>
@@ -109,6 +119,7 @@ const App = () => {
             path="/"
             element={
               <div>
+                <Heading2>Blogs</Heading2>
                 <Togglable buttonLabel="create new blog" ref={blogFormRef}>
                   <BlogForm toggleRef={blogFormRef} />
                 </Togglable>
@@ -121,7 +132,7 @@ const App = () => {
           <Route path="/blogs/:id" element={<Blog />} />
         </Routes>
       </Router>
-    </div>
+    </Page>
   )
 }
 
