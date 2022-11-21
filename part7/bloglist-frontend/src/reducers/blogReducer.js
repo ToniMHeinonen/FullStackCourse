@@ -93,4 +93,23 @@ export const deleteBlog = (blog) => {
   }
 }
 
+export const createBlogComment = (blog, content) => {
+  return async (dispatch) => {
+    try {
+      const newComment = await blogService.createBlogComment(blog.id, content)
+      const modifiedBlog = {
+        ...blog,
+        comments: blog.comments.concat(newComment),
+      }
+      dispatch(modifyBlog(modifiedBlog))
+      return { status: 'success', blog: modifiedBlog }
+    } catch (exception) {
+      const error = exception.response.data.error
+      dispatch(setError(error))
+      console.log(error)
+      return { status: 'error', error }
+    }
+  }
+}
+
 export default blogSlice.reducer

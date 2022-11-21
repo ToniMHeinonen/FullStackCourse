@@ -1,10 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteBlog, likeBlog } from '../reducers/blogReducer'
+import {
+  createBlogComment,
+  deleteBlog,
+  likeBlog,
+} from '../reducers/blogReducer'
+import { useField } from '../hooks'
 
 const Blog = () => {
   const user = useSelector(({ user }) => user)
   const blogs = useSelector(({ blogs }) => blogs)
+  const newComment = useField('text')
+
+  const commentFields = { ...newComment, reset: undefined }
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -21,6 +29,17 @@ const Blog = () => {
       if (request.status === 'success') {
         navigate('/')
       }
+    }
+  }
+
+  const addComment = async (e) => {
+    e.preventDefault()
+    const request = await dispatch(
+      createBlogComment(blog, { comment: newComment.value })
+    )
+
+    if (request.status === 'success') {
+      newComment.reset()
     }
   }
 
@@ -50,9 +69,13 @@ const Blog = () => {
           remove
         </button>
       ) : (
-        <div></div>
+        <></>
       )}
       <h2>comments</h2>
+      <form onSubmit={addComment}>
+        <input {...commentFields} />
+        <button>add comment</button>
+      </form>
       <ul>
         {blog.comments.map((c) => (
           <li key={c.id}>{c.comment}</li>
