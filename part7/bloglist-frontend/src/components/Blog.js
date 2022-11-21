@@ -52,6 +52,12 @@ const Blog = () => {
       ) : (
         <div></div>
       )}
+      <h2>comments</h2>
+      <ul>
+        {blog.comments.map((c) => (
+          <li key={c.id}>{c.comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
