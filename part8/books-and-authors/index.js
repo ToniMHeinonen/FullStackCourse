@@ -52,24 +52,66 @@ const typeDefs = gql`
   }
 `
 
+const bookAuthorFilter = (author) => {
+  return [
+    {
+      $lookup: {
+        from: 'authors',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author',
+      },
+    },
+    {
+      $addFields: {
+        author: {
+          $arrayElemAt: ['$author', 0],
+        },
+      },
+    },
+    {
+      $match: {
+        'author.name': author,
+      },
+    },
+  ]
+}
+
 const resolvers = {
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      if (!args.author && !args.genre) return Book.find({})
+      // All books
+      if (!args.author && !args.genre) return Book.find({}).populate('author')
 
-      // Parameters are not yet working
-      const byAuthor = (book) => book.author === args.author
-      const authorBooks = args.author ? books.filter(byAuthor) : books
+      // Filter only by genre
+      const booksByGenre = { genres: { $in: [args.genre] } }
 
-      const byGenre = (book) => book.genres.includes(args.genre)
-      return args.genre ? authorBooks.filter(byGenre) : authorBooks
+      if (!args.author && args.genre)
+        return Book.find(booksByGenre).populate('author')
+
+      // Filter only by author
+      const bookFilter = bookAuthorFilter(args.author)
+
+      if (args.author && !args.genre) return Book.aggregate(bookFilter)
+
+      // Filter by genre and author
+      bookFilter.push({
+        $match: {
+          genres: booksByGenre.genres,
+        },
+      })
+
+      return Book.aggregate(bookFilter)
     },
     allAuthors: async () => Author.find({}),
   },
   Author: {
-    bookCount: ({ name }) => books.filter((b) => b.author === name).length,
+    bookCount: async ({ name }) => {
+      const books = await Book.aggregate(bookAuthorFilter(name))
+      return books.length
+    },
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -83,15 +125,15 @@ const resolvers = {
       const book = new Book({ ...args, author })
       return book.save()
     },
-    editAuthor: (root, args) => {
-      const author = authors.find((a) => a.name === args.name)
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
       if (!author) {
         return null
       }
 
-      const updatedAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map((a) => (a.name === args.name ? updatedAuthor : a))
-      return updatedAuthor
+      author.born = args.setBornTo
+
+      return author.save()
     },
   },
 }
