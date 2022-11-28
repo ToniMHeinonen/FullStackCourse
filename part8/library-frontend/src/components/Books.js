@@ -6,13 +6,17 @@ import BookList from './BookList'
 
 const Books = (props) => {
   const [genre, setGenre] = useState(allGenres)
-  const result = useQuery(ALL_BOOKS)
+  const allBooksResult = useQuery(ALL_BOOKS)
+  const genreBooksResult = useQuery(ALL_BOOKS, {
+    // Retrieve all books if genre is set to allGenres
+    variables: { genre: genre === allGenres ? undefined : genre },
+  })
 
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (allBooksResult.loading || genreBooksResult.loading) {
     return <div>loading...</div>
   }
 
@@ -20,7 +24,8 @@ const Books = (props) => {
     backgroundColor: 'lightblue',
   }
 
-  const books = result.data.allBooks
+  const books = allBooksResult.data.allBooks
+  const genreBooks = genreBooksResult.data.allBooks
 
   const genres = books.reduce((currentGenres, book) => {
     return [...new Set([...currentGenres, ...book.genres])]
@@ -35,7 +40,7 @@ const Books = (props) => {
         in genre <strong>{genre}</strong>
       </p>
 
-      <BookList books={books} genre={genre} />
+      <BookList books={genreBooks} />
       <div>
         {genres.map((g) => (
           <button

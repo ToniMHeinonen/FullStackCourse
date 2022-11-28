@@ -2,7 +2,7 @@ import { allGenres } from '../utils/constants'
 
 const BookList = ({ books, genre }) => {
   const showBook = (book) => {
-    if (genre === allGenres || book.genres.includes(genre)) {
+    if (!genre || genre === allGenres || book.genres.includes(genre)) {
       return (
         <tr key={book.title}>
           <td>{book.title}</td>
