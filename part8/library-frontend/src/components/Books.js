@@ -1,8 +1,9 @@
-import { useQuery } from '@apollo/client'
+import { useQuery, useSubscription } from '@apollo/client'
 import { useState } from 'react'
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, BOOK_ADDED } from '../queries'
 import { allGenres } from '../utils/constants'
 import BookList from './BookList'
+import { updateCache } from '../utils/cacheControls'
 
 const Books = (props) => {
   const [genre, setGenre] = useState(allGenres)
@@ -10,7 +11,19 @@ const Books = (props) => {
   const genreBooksResult = useQuery(ALL_BOOKS, {
     // Retrieve all books if genre is set to allGenres
     variables: { genre: genre === allGenres ? undefined : genre },
-    fetchPolicy: 'no-cache',
+  })
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded
+      addedBook.genres.forEach((g, i) => {
+        updateCache(
+          client.cache,
+          { query: ALL_BOOKS, variables: { genre: g } },
+          addedBook
+        )
+      })
+    },
   })
 
   if (!props.show) {

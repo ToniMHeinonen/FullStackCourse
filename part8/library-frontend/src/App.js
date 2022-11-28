@@ -5,7 +5,8 @@ import Books from './components/Books'
 import LoginForm from './components/LoginForm'
 import NewBook from './components/NewBook'
 import Recommended from './components/Recommended'
-import { BOOK_ADDED } from './queries'
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { updateCache } from './utils/cacheControls'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -16,6 +17,7 @@ const App = () => {
     onData: ({ data, client }) => {
       const addedBook = data.data.bookAdded
       notify(`${addedBook.title} added`)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
     },
   })
 
