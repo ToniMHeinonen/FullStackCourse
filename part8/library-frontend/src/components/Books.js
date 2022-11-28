@@ -10,6 +10,7 @@ const Books = (props) => {
   const genreBooksResult = useQuery(ALL_BOOKS, {
     // Retrieve all books if genre is set to allGenres
     variables: { genre: genre === allGenres ? undefined : genre },
+    fetchPolicy: 'no-cache',
   })
 
   if (!props.show) {
