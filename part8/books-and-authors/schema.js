@@ -35,6 +35,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    findAuthor(name: String): Author
     me: User
   }
 

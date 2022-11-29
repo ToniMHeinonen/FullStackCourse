@@ -4,6 +4,7 @@ const Book = require('./models/book')
 const Author = require('./models/author')
 const User = require('./models/user')
 const { PubSub } = require('graphql-subscriptions')
+const author = require('./models/author')
 const pubsub = new PubSub()
 
 const JWT_SECRET = process.env.SECRET
@@ -65,10 +66,13 @@ const resolvers = {
     me: (root, args, context) => {
       return context.currentUser
     },
+    findAuthor: async (root, args) => {
+      return Author.findOne({ name: args.name })
+    },
   },
   Author: {
-    bookCount: async ({ name }) => {
-      const books = await Book.aggregate(bookAuthorFilter(name))
+    bookCount: async (author, args, { loaders }) => {
+      const books = await loaders.book.load(author.id)
       return books.length
     },
   },

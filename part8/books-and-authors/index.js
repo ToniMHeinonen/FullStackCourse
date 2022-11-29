@@ -11,8 +11,11 @@ const { useServer } = require('graphql-ws/lib/use/ws')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = require('./models/user')
+
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
+const DataLoader = require('dataloader')
+const { batchBooks } = require('./loaders')
 
 const JWT_SECRET = process.env.SECRET
 const MONGODB_URI = process.env.MONGODB_URI
@@ -45,10 +48,14 @@ const start = async () => {
     schema,
     context: async ({ req }) => {
       const auth = req ? req.headers.authorization : null
+      let currentUser
       if (auth && auth.toLowerCase().startsWith('bearer ')) {
         const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
-        const currentUser = await User.findById(decodedToken.id)
-        return { currentUser }
+        currentUser = await User.findById(decodedToken.id)
+      }
+      return {
+        currentUser,
+        loaders: { book: new DataLoader((keys) => batchBooks(keys)) },
       }
     },
     plugins: [
