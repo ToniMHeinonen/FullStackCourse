@@ -34,7 +34,10 @@ const parseExerciseArguments = (args: Array<string>): ExerciseArguments => {
 const calculateAverage = (array: Array<number>): number =>
   array.reduce((a, b) => a + b) / array.length;
 
-const calculateExercises = (hours: Array<number>, target: number): Result => {
+export const calculateExercises = (
+  hours: Array<number>,
+  target: number
+): Result => {
   const periodLength = hours.length;
   const trainingDays = hours.filter((d) => d !== 0).length;
   const average = calculateAverage(hours);
