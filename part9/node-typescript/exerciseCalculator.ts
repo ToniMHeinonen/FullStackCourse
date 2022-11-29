@@ -16,7 +16,8 @@ interface ExerciseArguments {
 const parseExerciseArguments = (args: Array<string>): ExerciseArguments => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
-  const [arg1, arg2, argTarget, ...argHours] = args;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, __, argTarget, ...argHours] = args;
 
   const target = Number(argTarget);
   const hours = argHours.map((h) => Number(h));
