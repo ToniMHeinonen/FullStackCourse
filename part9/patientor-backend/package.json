@@ -2,11 +2,11 @@
   "name": "patientor-backend",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start": "node build/index.js",
     "tsc": "tsc",
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts ."
   },
   "author": "Toni Heinonen",
