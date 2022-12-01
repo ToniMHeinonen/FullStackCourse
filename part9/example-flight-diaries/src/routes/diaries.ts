@@ -19,7 +19,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  console.log('here');
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const newDiaryEntry = toNewDiaryEntry(req.body);
