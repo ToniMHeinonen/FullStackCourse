@@ -1,5 +1,7 @@
 # Patientor - frontend
 
+This project has been cloned from https://github.com/fullstack-hy2020/patientor
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
