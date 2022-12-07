@@ -6,6 +6,7 @@ import { addPatientInfo, useStateValue } from '../state';
 import { Patient } from '../types';
 import GenderIcon from '../components/GenderIcon';
 import { Paper } from '@material-ui/core';
+import PatientEntryList from './PatientEntryList';
 
 const PatientInfoPage = () => {
   const [{ patientInfos }, dispatch] = useStateValue();
@@ -42,6 +43,7 @@ const PatientInfoPage = () => {
       </h1>
       <Paper variant="outlined">ssn: {patient.ssn}</Paper>
       <Paper variant="outlined">occupation: {patient.occupation}</Paper>
+      <PatientEntryList patient={patient} />
     </div>
   );
 };
