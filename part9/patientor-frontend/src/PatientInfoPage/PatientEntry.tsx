@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { Entry } from '../types';
+import DiagnosisInfo from './DiagnosisInfo';
 
 const PatientEntry = ({ entry }: { entry: Entry }): ReactElement => {
   return (
@@ -9,7 +10,9 @@ const PatientEntry = ({ entry }: { entry: Entry }): ReactElement => {
       </div>
       <ul>
         {entry.diagnosisCodes?.map((c) => (
-          <li key={c}>{c}</li>
+          <li key={c}>
+            <DiagnosisInfo code={c} />
+          </li>
         ))}
       </ul>
     </>
