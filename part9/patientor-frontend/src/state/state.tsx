@@ -50,3 +50,7 @@ export const addPatientInfo = (patient: Patient): Action => {
 export const setDiagnosesList = (diagnoses: Diagnosis[]): Action => {
   return { type: 'SET_DIAGNOSES_LIST', payload: diagnoses };
 };
+
+export const addPatientEntry = (patient: Patient): Action => {
+  return { type: 'ADD_PATIENT_ENTRY', payload: patient };
+};
