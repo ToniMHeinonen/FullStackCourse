@@ -40,7 +40,6 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       validate={(values) => {
         const requiredError = 'Field is required';
         const errors: { [field: string]: string } = {};
-        console.log('codes', values.diagnosisCodes);
         if (!values.description) {
           errors.description = requiredError;
         }

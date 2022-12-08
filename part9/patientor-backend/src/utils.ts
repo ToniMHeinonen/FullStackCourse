@@ -14,12 +14,28 @@ import {
 } from './types';
 
 /**
- * Helper function for exhaustive type checking
+ * Helper function for exhaustive type checking.
  */
 export const assertNever = (value: never): never => {
   throw new Error(
     `Unhandled discriminated union member: ${JSON.stringify(value)}`
   );
+};
+
+/**
+ * Helper function for converting error message to proper object.
+ */
+export const convertError = (
+  error: unknown
+): { title: string; error: string } => {
+  const errorMessage = {
+    title: 'Something went wrong.',
+    error: 'Error: Undefined',
+  };
+  if (error instanceof Error) {
+    errorMessage.error = error.message;
+  }
+  return errorMessage;
 };
 
 const isString = (text: unknown): text is string => {

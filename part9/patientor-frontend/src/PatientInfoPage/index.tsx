@@ -14,6 +14,7 @@ const PatientInfoPage = () => {
   const [{ patientInfos }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     void fetchPatient();
@@ -56,9 +57,14 @@ const PatientInfoPage = () => {
       closeModal();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
+        console.log('error', e?.response?.data);
         console.error(e?.response?.data || 'Unrecognized axios error');
+        setError(
+          String(e?.response?.data?.error) || 'Unrecognized axios error'
+        );
       } else {
         console.error('Unknown error', e);
+        setError('Unknown error');
       }
     }
   };
@@ -75,6 +81,7 @@ const PatientInfoPage = () => {
         modalOpen={modalOpen}
         onSubmit={submitNewPatient}
         onClose={closeModal}
+        error={error}
       />
       <Button variant="contained" color="secondary" onClick={() => openModal()}>
         Add New Entry
