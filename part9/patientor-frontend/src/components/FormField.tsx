@@ -22,18 +22,34 @@ export type HealthCheckRatingOption = {
   label: string;
 };
 
+export type StringOption = {
+  value: string;
+  label: string;
+};
+
+export type SelectFieldError = {
+  message: string | undefined;
+  touched: boolean | undefined;
+};
+
 // props for select field component
 type SelectFieldProps = {
   name: string;
   label: string;
-  options: GenderOption[] | HealthCheckRatingOption[];
+  options: GenderOption[] | HealthCheckRatingOption[] | StringOption[];
+  error?: SelectFieldError;
 };
 
 const FormikSelect = ({ field, ...props }: FieldProps) => (
   <Select {...field} {...props} />
 );
 
-export const SelectField = ({ name, label, options }: SelectFieldProps) => (
+export const SelectField = ({
+  name,
+  label,
+  options,
+  error,
+}: SelectFieldProps) => (
   <>
     <InputLabel>{label}</InputLabel>
     <Field
@@ -49,6 +65,9 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => (
         </MenuItem>
       ))}
     </Field>
+    <Typography variant="subtitle2" style={{ color: 'red' }}>
+      {error?.message && error?.touched && <div>{error.message}</div>}
+    </Typography>
   </>
 );
 

@@ -3,12 +3,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiBaseUrl } from '../constants';
 import { addPatientEntry, addPatientInfo, useStateValue } from '../state';
-import { Entry, Patient } from '../types';
+import { Entry, NewEntry, Patient } from '../types';
 import GenderIcon from '../components/GenderIcon';
 import { Button, Paper } from '@material-ui/core';
 import PatientEntryList from './PatientEntryList';
 import AddEntryModal from '../AddEntryModal';
-import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 
 const PatientInfoPage = () => {
   const [{ patientInfos }, dispatch] = useStateValue();
@@ -46,7 +45,7 @@ const PatientInfoPage = () => {
     setModalOpen(false);
   };
 
-  const submitNewPatient = async (values: EntryFormValues) => {
+  const submitNewPatient = async (values: NewEntry) => {
     try {
       const { data: newEntry } = await axios.post<Entry>(
         `${apiBaseUrl}/patients/${id}/entries`,
