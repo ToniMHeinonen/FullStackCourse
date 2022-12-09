@@ -62,9 +62,11 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
 }
 
 export interface CombinedEntry extends BaseEntry {
-  type: string;
+  type: 'HealthCheck' | 'Hospital' | 'OccupationalHealthcare';
   healthCheckRating: HealthCheckRating;
   discharge: HospitalDischarge;
+  employerName: string;
+  sickLeave: SickLeave;
 }
 
 export type NewEntry = Omit<CombinedEntry, 'id'>;

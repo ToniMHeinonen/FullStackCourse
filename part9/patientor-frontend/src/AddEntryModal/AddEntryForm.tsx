@@ -1,5 +1,5 @@
 import { Button, Grid } from '@material-ui/core';
-import { Field, Form, Formik, FormikErrors } from 'formik';
+import { Field, Form, Formik, FormikErrors, FormikTouched } from 'formik';
 import {
   DiagnosisSelection,
   HealthCheckRatingOption,
@@ -9,14 +9,24 @@ import {
 } from '../components/FormField';
 import { useStateValue } from '../state';
 import { HealthCheckRating, NewEntry } from '../types';
-import { isDate } from '../utils';
+import {
+  HealthCheckFields,
+  HospitalFields,
+  OccupationalHealthcareFields,
+} from './EntryFormFields';
+import validateEntryForm from './EntryFormValidation';
 
 interface Props {
   onSubmit: (values: NewEntry) => void;
   onCancel: () => void;
 }
 
-const healthCheckRatingOptions: HealthCheckRatingOption[] = [
+export interface ErrorProps {
+  errors: FormikErrors<NewEntry>;
+  touched: FormikTouched<NewEntry>;
+}
+
+export const healthCheckRatingOptions: HealthCheckRatingOption[] = [
   { value: -1, label: 'Select health rating' },
   { value: HealthCheckRating.Healthy, label: 'Healthy' },
   { value: HealthCheckRating.LowRisk, label: 'Low risk' },
@@ -27,6 +37,7 @@ const healthCheckRatingOptions: HealthCheckRatingOption[] = [
 const typeOptions: StringOption[] = [
   { value: 'HealthCheck', label: 'Health Check' },
   { value: 'Hospital', label: 'Hospital' },
+  { value: 'OccupationalHealthcare', label: 'Occupational Healthcare' },
 ];
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
@@ -42,50 +53,11 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         type: 'HealthCheck',
         healthCheckRating: -1,
         discharge: { date: '', criteria: '' },
+        employerName: '',
+        sickLeave: { startDate: '', endDate: '' },
       }}
       onSubmit={onSubmit}
-      validate={(values) => {
-        const requiredError = 'Field is required';
-        const dateError = 'Date formatted incorrectly (correct: YYYY-MM-DD)';
-        const errors: FormikErrors<NewEntry> = {};
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        if (!values.date) {
-          errors.date = requiredError;
-        } else if (!isDate(values.date)) {
-          errors.date = dateError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (
-          values.type === 'HealthCheck' &&
-          !Object.values(HealthCheckRating).includes(values.healthCheckRating)
-        ) {
-          errors.healthCheckRating = requiredError;
-        }
-        if (values.type === 'Hospital') {
-          if (!values.discharge.date) {
-            errors.discharge = {
-              ...errors.discharge,
-              date: requiredError,
-            };
-          } else if (!isDate(values.discharge.date)) {
-            errors.discharge = {
-              ...errors.discharge,
-              date: dateError,
-            };
-          }
-          if (!values.discharge.criteria) {
-            errors.discharge = {
-              ...errors.discharge,
-              criteria: requiredError,
-            };
-          }
-        }
-        return errors;
-      }}
+      validate={validateEntryForm}
     >
       {({
         isValid,
@@ -123,31 +95,11 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               diagnoses={Object.values(diagnoses)}
             />
             {values.type === 'HealthCheck' && (
-              <SelectField
-                label="Health Check Rating"
-                name="healthCheckRating"
-                options={healthCheckRatingOptions}
-                error={{
-                  message: errors.healthCheckRating,
-                  touched: touched.healthCheckRating,
-                }}
-              />
+              <HealthCheckFields errors={errors} touched={touched} />
             )}
-            {values.type === 'Hospital' && (
-              <Field
-                label="Discharge date"
-                placeholder="YYYY-MM-DD"
-                name="discharge.date"
-                component={TextField}
-              />
-            )}
-            {values.type === 'Hospital' && (
-              <Field
-                label="Discharge criteria"
-                placeholder="Criteria"
-                name="discharge.criteria"
-                component={TextField}
-              />
+            {values.type === 'Hospital' && <HospitalFields />}
+            {values.type === 'OccupationalHealthcare' && (
+              <OccupationalHealthcareFields />
             )}
             <Grid>
               <Grid item>
