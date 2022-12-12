@@ -7,13 +7,15 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.appBarBackground,
+    flexDirection: 'row',
   },
 })
 
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <AppBarTab text="Repositories" />
+      <AppBarTab text="Repositories" route="/" />
+      <AppBarTab text="Sign in" route="/login" />
     </View>
   )
 }
