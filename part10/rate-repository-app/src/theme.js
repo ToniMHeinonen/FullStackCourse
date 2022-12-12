@@ -5,6 +5,7 @@ const theme = {
     textInverse: '#DDD',
     primary: '#0366d6',
     appBarBackground: '#24292e',
+    appBackground: '#e1e4e8',
   },
   fontSizes: {
     body: 14,
@@ -17,6 +18,9 @@ const theme = {
   fontWeights: {
     normal: '400',
     bold: '700',
+  },
+  borders: {
+    radiusImage: 5,
   },
 }
 
