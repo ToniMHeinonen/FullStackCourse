@@ -14,6 +14,7 @@
     "@expo/dev-server": "0.1.120",
     "@expo/metro-config": "^0.5.1",
     "@expo/webpack-config": "^0.17.0",
+    "dotenv": "^16.0.3",
     "expo": "~46.0.17",
     "expo-status-bar": "~1.4.0",
     "formik": "^2.2.9",
