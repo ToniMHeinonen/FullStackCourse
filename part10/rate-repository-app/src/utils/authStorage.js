@@ -18,6 +18,4 @@ class AuthStorage {
   }
 }
 
-const authStorage = new AuthStorage()
-
-export default authStorage
+export default AuthStorage

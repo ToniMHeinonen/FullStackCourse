@@ -5,7 +5,7 @@ import theme from '../theme'
 import TextButton from './TextButton'
 import * as yup from 'yup'
 import useSignIn from '../hooks/useSignIn'
-import authStorage from '../utils/authStorage'
+import useAuthStorage from '../hooks/useAuthStorage'
 
 const initialValues = {
   username: '',
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 })
 
 const SignIn = () => {
+  const authStorage = useAuthStorage()
   const [signIn] = useSignIn()
 
   const onSubmit = async (values) => {
