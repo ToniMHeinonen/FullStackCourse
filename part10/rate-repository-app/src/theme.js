@@ -9,6 +9,7 @@ const theme = {
     appBackground: '#e1e4e8',
     mainColor: 'white',
     borderLightColor: '#999',
+    error: '#d73a4a',
   },
   fontSizes: {
     body: 14,
