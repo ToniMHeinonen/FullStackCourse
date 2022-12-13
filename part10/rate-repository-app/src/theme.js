@@ -4,8 +4,11 @@ const theme = {
     textSecondary: '#586069',
     textInverse: '#DDD',
     primary: '#0366d6',
+    primaryLight: '#2685f0',
     appBarBackground: '#24292e',
     appBackground: '#e1e4e8',
+    mainColor: 'white',
+    borderLightColor: '#999',
   },
   fontSizes: {
     body: 14,
