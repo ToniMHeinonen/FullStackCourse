@@ -10,11 +10,14 @@
     "lint": "eslint ./src/**/*.{js,jsx} App.js"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.2",
     "@expo/dev-server": "0.1.120",
+    "@expo/metro-config": "^0.5.1",
     "@expo/webpack-config": "^0.17.0",
     "expo": "~46.0.17",
     "expo-status-bar": "~1.4.0",
     "formik": "^2.2.9",
+    "graphql": "^15.8.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
