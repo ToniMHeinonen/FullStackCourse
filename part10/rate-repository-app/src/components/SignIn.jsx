@@ -5,6 +5,7 @@ import theme from '../theme'
 import TextButton from './TextButton'
 import * as yup from 'yup'
 import useSignIn from '../hooks/useSignIn'
+import authStorage from '../utils/authStorage'
 
 const initialValues = {
   username: '',
@@ -37,7 +38,7 @@ const SignIn = () => {
 
     try {
       const { data } = await signIn({ username, password })
-      console.log(data)
+      authStorage.setAccessToken(data.authenticate.accessToken)
     } catch (e) {
       console.log(e)
     }
