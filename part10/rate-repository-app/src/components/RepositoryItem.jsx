@@ -64,7 +64,7 @@ const RepositoryItem = ({ item }) => {
   const reviews = convertToThousands(item.reviewCount)
 
   return (
-    <View style={styles.container}>
+    <View testID="repositoryItem" style={styles.container}>
       <View style={styles.topRow}>
         <Image size="tinyLogo" uri={item.ownerAvatarUrl} style={styles.logo} />
         <View style={styles.topColumn}>
