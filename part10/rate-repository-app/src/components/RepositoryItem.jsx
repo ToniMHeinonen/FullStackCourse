@@ -1,9 +1,11 @@
 import { View, StyleSheet } from 'react-native'
+import * as Linking from 'expo-linking'
 import theme from '../theme'
 import { convertToThousands } from '../utils'
 import Image from './Image'
 import Subheading from './Subheading'
 import Text from './Text'
+import TextButton from './TextButton'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
   topColumn: {
     flexDirection: 'column',
     marginLeft: 20,
-    // Make text wrap work by setting shrink
+    // Make text wrap by setting shrink
     flexShrink: 1,
     marginBottom: 10,
   },
@@ -45,6 +47,9 @@ const styles = StyleSheet.create({
   statisticParam: {
     alignSelf: 'center',
   },
+  openButton: {
+    marginTop: 15,
+  },
 })
 
 const Statistic = ({ name, value }) => {
@@ -58,10 +63,14 @@ const Statistic = ({ name, value }) => {
   )
 }
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, showButton }) => {
   const stars = convertToThousands(item.stargazersCount)
   const forks = convertToThousands(item.forksCount)
   const reviews = convertToThousands(item.reviewCount)
+
+  const openRepository = () => {
+    Linking.openURL(item.url)
+  }
 
   return (
     <View testID="repositoryItem" style={styles.container}>
@@ -83,6 +92,11 @@ const RepositoryItem = ({ item }) => {
         <Statistic name="Reviews" value={reviews} />
         <Statistic name="Rating" value={item.ratingAverage} />
       </View>
+      {showButton && (
+        <TextButton onPress={openRepository} buttonStyle={styles.openButton}>
+          Open in GitHub
+        </TextButton>
+      )}
     </View>
   )
 }
