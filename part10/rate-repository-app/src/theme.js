@@ -16,7 +16,7 @@ const theme = {
   fontSizes: {
     body: 14,
     subheading: 16,
-    appBarTab: 18,
+    appBarTab: 16,
   },
   fonts: {
     main: Platform.select({

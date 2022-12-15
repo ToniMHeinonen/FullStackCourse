@@ -20,11 +20,14 @@ const AppBar = () => {
   })
   const signOut = useSignOut()
 
-  let signElement = null
+  let conditionalElements = null
 
   if (!loading) {
-    signElement = data.me ? (
-      <AppBarTab text="Sign out" onClick={signOut} />
+    conditionalElements = data.me ? (
+      <>
+        <AppBarTab text="Create a review" route="/create-review" />
+        <AppBarTab text="Sign out" onPress={signOut} />
+      </>
     ) : (
       <AppBarTab text="Sign in" route="/login" />
     )
@@ -34,7 +37,7 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarTab text="Repositories" route="/" />
-        {signElement}
+        {conditionalElements}
       </ScrollView>
     </View>
   )

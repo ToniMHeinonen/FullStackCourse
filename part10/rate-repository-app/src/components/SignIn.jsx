@@ -1,11 +1,11 @@
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { useNavigate } from 'react-router-native'
 import { Formik } from 'formik'
 import FormikTextInput from './FormikTextInput'
-import theme from '../theme'
 import TextButton from './TextButton'
 import * as yup from 'yup'
 import useSignIn from '../hooks/useSignIn'
+import formStyles from '../styles/formStyles'
 
 const initialValues = {
   username: '',
@@ -21,13 +21,6 @@ const validationSchema = yup.object().shape({
     .string()
     .min(6, 'Password length must be at least 6 characters')
     .required('Password is required'),
-})
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.mainColor,
-    padding: 10,
-  },
 })
 
 const SignIn = () => {
@@ -62,7 +55,7 @@ export const SignInFormContainer = ({ onSubmit }) => {
 
 const SignInForm = ({ onSubmit }) => {
   return (
-    <View style={styles.container}>
+    <View style={formStyles.container}>
       <FormikTextInput name="username" placeholder="Username" />
       <FormikTextInput name="password" placeholder="Password" secureTextEntry />
       <TextButton onPress={onSubmit}>Submit</TextButton>
