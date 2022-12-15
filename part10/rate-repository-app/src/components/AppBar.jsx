@@ -29,7 +29,10 @@ const AppBar = () => {
         <AppBarTab text="Sign out" onPress={signOut} />
       </>
     ) : (
-      <AppBarTab text="Sign in" route="/login" />
+      <>
+        <AppBarTab text="Sign in" route="/login" />
+        <AppBarTab text="Sign up" route="/sign-up" />
+      </>
     )
   }
 
