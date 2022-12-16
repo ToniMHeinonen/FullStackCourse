@@ -28,6 +28,7 @@
     "@expo/metro-config": "^0.5.1",
     "@expo/webpack-config": "^0.17.0",
     "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-picker/picker": "2.4.2",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "expo": "~46.0.17",
@@ -40,8 +41,8 @@
     "react-native": "0.69.6",
     "react-native-web": "~0.18.7",
     "react-router-native": "^6.4.2",
-    "yup": "^0.32.11",
-    "@react-native-picker/picker": "2.4.2"
+    "use-debounce": "^9.0.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
