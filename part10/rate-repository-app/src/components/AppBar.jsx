@@ -26,6 +26,7 @@ const AppBar = () => {
     conditionalElements = data.me ? (
       <>
         <AppBarTab text="Create a review" route="/create-review" />
+        <AppBarTab text="My reviews" route="/my-reviews" />
         <AppBarTab text="Sign out" onPress={signOut} />
       </>
     ) : (
