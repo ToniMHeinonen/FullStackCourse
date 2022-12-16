@@ -61,7 +61,7 @@ export class RepositoryListContainer extends React.Component {
   }
 
   render() {
-    const { repositories, onPress } = this.props
+    const { repositories, onEndReach, onPress } = this.props
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
       : []
@@ -72,6 +72,8 @@ export class RepositoryListContainer extends React.Component {
         ItemSeparatorComponent={RepositoryItemSeparator}
         keyExtractor={(item) => item.id}
         keyboardShouldPersistTaps="always"
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
         ListHeaderComponent={this.renderHeader}
         renderItem={({ item }) => (
           <Pressable onPress={() => onPress(item.id)}>
@@ -87,16 +89,25 @@ const RepositoryList = () => {
   const [searchInput, setSearchInput] = useState('')
   const [searchKeyword] = useDebounce(searchInput, 500)
   const [sortOrder, setSortOrder] = useState('latest-repos')
-  const { repositories } = useRepositories(sortOrder, searchKeyword)
+  const { repositories, fetchMore } = useRepositories({
+    sortOrder,
+    searchKeyword,
+    first: 8,
+  })
   const navigate = useNavigate()
 
   const onPress = (id) => {
     navigate(`/${id}`)
   }
 
+  const onEndReach = () => {
+    fetchMore()
+  }
+
   return (
     <RepositoryListContainer
       repositories={repositories}
+      onEndReach={onEndReach}
       onPress={onPress}
       sortOrder={sortOrder}
       setSortOrder={setSortOrder}
