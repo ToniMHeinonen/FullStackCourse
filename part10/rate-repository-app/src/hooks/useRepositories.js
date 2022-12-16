@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { GET_REPOSITORIES } from '../graphql/queries'
 
-const useRepositories = ({ sortOrder, searchKeyword }) => {
+const useRepositories = ({ sortOrder, searchKeyword, first }) => {
   let orderBy, orderDirection
   switch (sortOrder) {
     case 'latest-repos':
@@ -20,7 +20,7 @@ const useRepositories = ({ sortOrder, searchKeyword }) => {
       throw Error(`Unimplemented sort order: ${sortOrder}`)
   }
 
-  const variables = { orderBy, orderDirection, searchKeyword }
+  const variables = { orderBy, orderDirection, searchKeyword, first }
 
   const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: 'cache-and-network',

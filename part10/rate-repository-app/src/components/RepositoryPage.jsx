@@ -71,7 +71,7 @@ const ReviewItem = ({ review }) => {
 
 const RepositoryPage = () => {
   const { id } = useParams()
-  const { repository } = useRepository(id)
+  const { repository, fetchMore } = useRepository({ id, first: 8 })
 
   if (!repository) return null
 
@@ -79,10 +79,16 @@ const RepositoryPage = () => {
     ? repository.reviews.edges.map((edge) => edge.node)
     : []
 
+  const onEndReach = () => {
+    fetchMore()
+  }
+
   return (
     <FlatList
       data={reviews}
       keyExtractor={({ id }) => id}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.2}
       ItemSeparatorComponent={RepositoryItemSeparator}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       renderItem={({ item }) => <ReviewItem review={item} />}
