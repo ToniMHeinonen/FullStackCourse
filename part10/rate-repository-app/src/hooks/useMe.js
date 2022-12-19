@@ -4,7 +4,7 @@ import { ME } from '../graphql/queries'
 const useMe = ({ includeReviews, first }) => {
   const variables = { includeReviews, first }
 
-  const { data, loading, fetchMore, ...result } = useQuery(ME, {
+  const { data, loading, fetchMore, refetch, ...result } = useQuery(ME, {
     fetchPolicy: 'cache-and-network',
     variables,
   })
@@ -27,6 +27,7 @@ const useMe = ({ includeReviews, first }) => {
   return {
     me: data?.me,
     fetchMore: handleFetchMore,
+    refetch,
     loading,
     ...result,
   }

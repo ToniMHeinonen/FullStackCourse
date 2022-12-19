@@ -11,6 +11,8 @@ const theme = {
     appBackground: '#e1e4e8',
     mainColor: 'white',
     borderLightColor: '#999',
+    delete: '#d73a4a',
+    deleteLight: '#f74a6a',
     error: '#d73a4a',
   },
   fontSizes: {

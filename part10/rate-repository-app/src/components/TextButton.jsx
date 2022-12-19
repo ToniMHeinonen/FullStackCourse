@@ -9,8 +9,17 @@ const styles = StyleSheet.create({
     borderRadius: theme.borders.radiusImage,
     backgroundColor: theme.colors.primary,
   },
-  buttonPressed: {
+  buttonPrimary: {
+    backgroundColor: theme.colors.primary,
+  },
+  buttonPrimaryPressed: {
     backgroundColor: theme.colors.primaryLight,
+  },
+  buttonDelete: {
+    backgroundColor: theme.colors.delete,
+  },
+  buttonDeletePressed: {
+    backgroundColor: theme.colors.deleteLight,
   },
   text: {
     color: 'white',
@@ -19,11 +28,20 @@ const styles = StyleSheet.create({
   },
 })
 
-const TextButton = ({ onPress, buttonStyle, textStyle, ...props }) => {
+const TextButton = ({ onPress, color, textStyle, style, ...props }) => {
+  let buttonStyle = styles.buttonPrimary
+  let buttonPressedStyle = styles.buttonPrimaryPressed
+
+  if (color === 'delete') {
+    buttonStyle = styles.buttonDelete
+    buttonPressedStyle = styles.buttonDeletePressed
+  }
+
   const buttonStyles = ({ pressed }) => [
     styles.button,
-    pressed && styles.buttonPressed,
     buttonStyle,
+    pressed && buttonPressedStyle,
+    style,
   ]
   const textStyles = [styles.text, textStyle]
 

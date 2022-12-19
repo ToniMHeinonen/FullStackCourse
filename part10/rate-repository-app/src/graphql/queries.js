@@ -71,6 +71,7 @@ export const ME = gql`
         edges {
           node {
             ...ReviewDetails
+            repositoryId
             repository {
               fullName
             }

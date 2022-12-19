@@ -1,8 +1,10 @@
 import { StyleSheet, View } from 'react-native'
+
 import repositoryStyles from '../styles/repositoryStyles'
 import Text from './Text'
 import { format } from 'date-fns'
 import theme from '../theme'
+import TextButton from './TextButton'
 
 const styles = StyleSheet.create({
   row: {
@@ -29,28 +31,59 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: 5,
   },
+  controlButtonsContainer: {
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-around',
+  },
+  controlButton: {
+    flex: 1,
+  },
 })
 
-const ReviewItem = ({ review, title }) => {
+const ReviewControlButtons = ({ onViewPress, onDeletePress }) => (
+  <View style={styles.controlButtonsContainer}>
+    <TextButton onPress={onViewPress} style={styles.controlButton}>
+      View repository
+    </TextButton>
+    <TextButton
+      onPress={onDeletePress}
+      color="delete"
+      style={styles.controlButton}
+    >
+      Delete review
+    </TextButton>
+  </View>
+)
+
+const ReviewItem = ({ review, title, onViewRepository, onDeleteReview }) => {
   return (
-    <View style={[repositoryStyles.container, styles.row]}>
-      <View style={styles.ratingContainer}>
-        <Text
-          color="primary"
-          fontSize="subheading"
-          fontWeight="bold"
-          style={styles.rating}
-        >
-          {review.rating}
-        </Text>
+    <View style={repositoryStyles.container}>
+      <View style={styles.row}>
+        <View style={styles.ratingContainer}>
+          <Text
+            color="primary"
+            fontSize="subheading"
+            fontWeight="bold"
+            style={styles.rating}
+          >
+            {review.rating}
+          </Text>
+        </View>
+        <View style={styles.column}>
+          <Text fontWeight="bold">{title}</Text>
+          <Text color="textSecondary">
+            {format(new Date(review.createdAt), 'MM/dd/yyyy')}
+          </Text>
+          <Text style={styles.reviewText}>{review.text}</Text>
+        </View>
       </View>
-      <View style={styles.column}>
-        <Text fontWeight="bold">{title}</Text>
-        <Text color="textSecondary">
-          {format(new Date(review.createdAt), 'MM/dd/yyyy')}
-        </Text>
-        <Text style={styles.reviewText}>{review.text}</Text>
-      </View>
+      {onViewRepository && onDeleteReview && (
+        <ReviewControlButtons
+          onViewPress={() => onViewRepository(review.repositoryId)}
+          onDeletePress={() => onDeleteReview(title, review.id)}
+        />
+      )}
     </View>
   )
 }

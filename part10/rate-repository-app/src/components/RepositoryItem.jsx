@@ -93,7 +93,7 @@ const RepositoryItem = ({ item, showButton }) => {
         <Statistic name="Rating" value={item.ratingAverage} />
       </View>
       {showButton && (
-        <TextButton onPress={openRepository} buttonStyle={styles.openButton}>
+        <TextButton onPress={openRepository} style={styles.openButton}>
           Open in GitHub
         </TextButton>
       )}
