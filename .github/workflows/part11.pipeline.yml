@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+defaults:
+  run:
+    working-directory: ./part11/full-stack-open-pokedex/
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
@@ -13,8 +17,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: cd to part 11 project
-        run: cd part11/full-stack-open-pokedex/
       - name: npm install
         run: npm install
       - name: lint
