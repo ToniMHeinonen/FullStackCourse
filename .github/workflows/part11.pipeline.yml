@@ -8,6 +8,8 @@ on:
 defaults:
   run:
     working-directory: ./part11/full-stack-open-pokedex/
+  with:
+    working-directory: ./part11/full-stack-open-pokedex/
 
 jobs:
   simple_deployment_pipeline:
