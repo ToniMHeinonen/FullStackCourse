@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 
-// Test GitHub action
-
 // Heroku dynamically sets a port
 const PORT = process.env.PORT || 5000
 
