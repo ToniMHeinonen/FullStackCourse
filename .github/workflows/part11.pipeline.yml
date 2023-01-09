@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - ./part11/full-stack-open-pokedex/**
+      - part11/full-stack-open-pokedex/**
 
 defaults:
   run:
