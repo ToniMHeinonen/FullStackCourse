@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - ./part11/full-stack-open-pokedex/**
 
 jobs:
   hello_world_job:
