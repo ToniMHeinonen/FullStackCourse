@@ -56,7 +56,7 @@ processes = []
   [[services.script_checks]]
     command = "./app/health_check.sh"
     args = ["https://full-stack-open-toni-pokedex.fly.dev/health"]
-    grace_period = "1s"
+    grace_period = "5s"
     interval = "5s"
-    restart_limit = 2
-    timeout = "1s"
+    restart_limit = 0
+    timeout = "2s"
