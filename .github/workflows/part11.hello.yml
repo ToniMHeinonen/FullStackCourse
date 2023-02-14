@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - part11/full-stack-open-pokedex/**
+      - .github/workflows/**
 
 jobs:
   hello_world_job:
