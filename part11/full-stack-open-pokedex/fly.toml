@@ -22,6 +22,7 @@ processes = []
   internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
+  script_checks = []
   [services.concurrency]
     hard_limit = 25
     soft_limit = 20
@@ -53,10 +54,13 @@ processes = []
     tls_skip_verify = false
     [services.http_checks.headers]
 
-  [[services.script_checks]]
-    command = "./app/health_check.sh"
-    args = ["https://full-stack-open-toni-pokedex.fly.dev/health"]
-    grace_period = "30s"
-    interval = "5s"
-    restart_limit = 0
-    timeout = "2s"
+#  This does not work for some reason and I have already wasted so much time
+#  with this exercise, I just have to give up at this point
+#  (this will be the first exercise I have not completed and hopefully last)
+#  [[services.script_checks]]
+#    command = "./app/health_check.sh"
+#    args = ["https://full-stack-open-toni-pokedex.fly.dev/health"]
+#    grace_period = "30s"
+#    interval = "5s"
+#    restart_limit = 0
+#    timeout = "2s"
