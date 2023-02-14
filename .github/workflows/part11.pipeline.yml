@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - part11/full-stack-open-pokedex/**
+      - .github/workflows/**
   pull_request:
     branches: [main]
     types: [opened, synchronize]
@@ -40,10 +41,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
           working-directory: ./part11/full-stack-open-pokedex/
-
-  deploy_to_fly:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-20.04
-    steps:
       - uses: superfly/flyctl-actions/setup-flyctl@master
+        if: github.event_name == 'push'
       - run: flyctl deploy --remote-only
+        if: github.event_name == 'push'
