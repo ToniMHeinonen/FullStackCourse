@@ -62,5 +62,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
           WITH_V: true
-          # Remove DRY_RUN when in proper use
+          # Remove DRY_RUN when in real project
           DRY_RUN: true
