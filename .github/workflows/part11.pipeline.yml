@@ -40,7 +40,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
           working-directory: ./part11/full-stack-open-pokedex/
-      - name: fly deploy
-        if: ${{ github.event_name == 'push' }}
-        uses: superfly/flyctl-actions/setup-flyctl@master
-        run: flyctl deploy --remote-only
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        if: github.event_name == 'push'
+      - run: flyctl deploy --remote-only
+        if: github.event_name == 'push'
