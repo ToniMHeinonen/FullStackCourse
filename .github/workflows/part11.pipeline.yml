@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-    pull_request:
-      branches: [main]
-      types: [opened, synchronize]
     paths:
       - part11/full-stack-open-pokedex/**
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
 
 defaults:
   run:
